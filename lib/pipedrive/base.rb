@@ -15,7 +15,7 @@ module Pipedrive
   class Base < OpenStruct
 
     include HTTParty
-    
+
     base_uri 'api.pipedrive.com/v1'
     headers HEADERS
     format :json
@@ -45,21 +45,22 @@ module Pipedrive
       super(struct_attrs)
     end
 
-    # Updates the object.
-    #
-    # @param [Hash] opts
-    # @return [Boolean]
-    def update(opts = {})
-      res = put "#{resource_path}/#{id}", :body => opts
-      if res.success?
-        res['data'] = Hash[res['data'].map {|k, v| [k.to_sym, v] }]
-        @table.merge!(res['data'])
-      else
-        false
-      end
-    end
-
     class << self
+
+      # Updates the object.
+      #
+      # @param [Hash] opts
+      # @return [Boolean]
+      def update(opts = {})
+        res = put "#{resource_path}/#{id}", :body => opts
+        if res.success?
+          res['data'] = Hash[res['data'].map {|k, v| [k.to_sym, v] }]
+          @table.merge!(res['data'])
+        else
+          false
+        end
+      end
+
       # Sets the authentication credentials in a class variable.
       #
       # @param [String] email cl.ly email
@@ -107,7 +108,7 @@ module Pipedrive
           bad_response(res,opts)
         end
       end
-      
+
       def find(id)
         res = get "#{resource_path}/#{id}"
         res.ok? ? new(res) : bad_response(res,id)
