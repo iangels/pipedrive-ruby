@@ -55,7 +55,7 @@ module Pipedrive
         res = put "#{resource_path}/#{id}", :body => opts
         if res.success?
           res['data'] = Hash[res['data'].map {|k, v| [k.to_sym, v] }]
-          @table.merge!(res['data'])
+          res
         else
           false
         end
