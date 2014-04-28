@@ -51,7 +51,7 @@ module Pipedrive
       #
       # @param [Hash] opts
       # @return [Boolean]
-      def update(opts = {})
+      def update(id, opts = {})
         res = put "#{resource_path}/#{id}", :body => opts
         if res.success?
           res['data'] = Hash[res['data'].map {|k, v| [k.to_sym, v] }]
